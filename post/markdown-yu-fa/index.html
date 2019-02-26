@@ -1,0 +1,199 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Markdown语法 | masin沉思录</title>
+<link rel="shortcut icon" href="https://fmcmasin.github.io/favicon.ico">
+<link rel="stylesheet" href="https://fmcmasin.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://fmcmasin.github.io">
+  <img class="avatar" src="https://fmcmasin.github.io/images/avatar.png" alt="" width="80px" height="80px">
+  </a>
+  <h1 class="site-title">
+    masin沉思录
+  </h1>
+  <p class="site-description">
+    跬步至千里，小河汇江海
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+</div>
+
+      
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Markdown语法
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2019-02-26 ·
+              </time>
+              
+            </div>
+            <div class="post-content">
+              <h1 id="-">标题</h1>
+<pre><code># 第一级标题 `&lt;h1&gt;` 
+## 第二级标题 `&lt;h2&gt;` 
+###### 第六级标题 `&lt;h6&gt;` </code></pre><p>效果：</p>
+<h1 id="-h1">第一级标题 <code>&lt;h1&gt;</code></h1>
+<h2 id="-h2">第二级标题 <code>&lt;h2&gt;</code></h2>
+<h6 id="-h6">第六级标题 <code>&lt;h6&gt;</code></h6>
+<h1 id="-">强调</h1>
+<pre><code>*这些文字会生成`&lt;em&gt;`*
+_这些文字会生成`&lt;u&gt;`_
+
+**这些文字会生成`&lt;strong&gt;`**
+__这些文字会生成`&lt;strong&gt;`__</code></pre><p>效果：<br><em>这些文字会生成<code>&lt;em&gt;</code></em><br><em>这些文字会生成<code>&lt;u&gt;</code></em></p>
+<p><strong>这些文字会生成<code>&lt;strong&gt;</code></strong><br><strong>这些文字会生成<code>&lt;strong&gt;</code></strong></p>
+<h1 id="-">换行</h1>
+<pre><code>四个空格加回车</code></pre><h1 id="-">列表</h1>
+<h4 id="-">无序列表</h4>
+<pre><code>* 项目一 无序列表 `* + 空格键`
+* 项目二
+* 项目二的子项目一 无序列表 `TAB + * + 空格键`
+* 项目二的子项目二</code></pre><p>效果：</p>
+<ul>
+<li>项目一 无序列表 <code>* + 空格键</code></li>
+<li>项目二</li>
+<li>项目二的子项目一 无序列表 <code>TAB + * + 空格键</code></li>
+<li>项目二的子项目二</li>
+</ul>
+<h4 id="-">有序列表</h4>
+<pre><code>1. 项目一 有序列表 `数字 + . + 空格键`
+2. 项目二 
+3. 项目三
+1. 项目三的子项目一 有序列表 `TAB + 数字 + . + 空格键`
+2. 项目三的子项目二</code></pre><p>效果：</p>
+<ol>
+<li>项目一 有序列表 <code>数字 + . + 空格键</code></li>
+<li>项目二 </li>
+<li>项目三</li>
+<li>项目三的子项目一 有序列表 <code>TAB + 数字 + . + 空格键</code></li>
+<li>项目三的子项目二</li>
+</ol>
+<h1 id="-">任务列表</h1>
+<pre><code>- [ ] 任务一 未做任务 `- + 空格 + [ ]`
+- [x] 任务二 已做任务 `- + 空格 + [x]`</code></pre><p>效果：</p>
+<ul>
+<li><input disabled="" type="checkbox"> 任务一 未做任务 <code>- + 空格 + [ ]</code></li>
+<li><input checked="" disabled="" type="checkbox"> 任务二 已做任务 <code>- + 空格 + [x]</code></li>
+</ul>
+<h1 id="-">区块引用</h1>
+<pre><code>某某说:
+&gt; 第一行引用
+&gt; 第二行费用文字</code></pre><p>效果：<br>某某说:</p>
+<blockquote>
+<p>第一行引用<br>第二行费用文字</p>
+</blockquote>
+<h1 id="-">表格</h1>
+<pre><code>第一格表头 | 第二格表头
+--------- | -------------
+内容单元格 第一列第一格 | 内容单元格第二列第一格
+内容单元格 第一列第二格 多加文字 | 内容单元格第二列第二格</code></pre><table>
+<thead>
+<tr>
+<th>第一格表头</th>
+<th>第二格表头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内容单元格 第一列第一格</td>
+<td>内容单元格第二列第一格</td>
+</tr>
+<tr>
+<td>内容单元格 第一列第二格 多加文字</td>
+<td>内容单元格第二列第二格</td>
+</tr>
+</tbody></table>
+
+            </div>
+          </article>
+        </div>
+    
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://fmcmasin.github.io/post/gong-zuo-liu-activity-chu-shi">
+              <h3 class="post-title">
+                工作流activity初识
+              </h3>
+            </a>
+          </div>  
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'b03bc1bf8f9b3ea13627',
+    clientSecret: '61e43bbb36c037482af487982c3aebac5088b6ba',
+    repo: 'fmcmasin.github.io',
+    owner: 'fmcmasin',
+    admin: ['fmcmasin'],
+    id: location.pathname,      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+    
+        <div class="site-footer">
+  Powered by Hve Notes
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

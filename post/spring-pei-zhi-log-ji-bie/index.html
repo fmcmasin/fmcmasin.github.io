@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>工作流activity初识 | masin沉思录</title>
+<title>spring配置log级别 | masin沉思录</title>
 <link rel="shortcut icon" href="https://fmcmasin.github.io/favicon.ico">
 <link rel="stylesheet" href="https://fmcmasin.github.io/styles/main.css">
 
@@ -58,17 +58,20 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              工作流activity初识
+              spring配置log级别
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2019-02-23 ·
+                · 2019-02-27 ·
               </time>
               
             </div>
             <div class="post-content">
-              <p>链接：<a href="https://www.jianshu.com/p/bdc9c9fa719d">https://www.jianshu.com/p/bdc9c9fa719d</a></p>
-
+              <p><strong>可根据不同的包配置不同的输出级别</strong></p>
+<pre><code>logging.path=/user/local/log
+logging.level.com.favorites=DEBUG
+logging.level.org.springframework.web=INFO
+logging.level.org.hibernate=ERROR</code></pre>
             </div>
           </article>
         </div>
@@ -76,9 +79,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://fmcmasin.github.io/post/fen-ku-fen-biao-zhong-jian-jian-dui-bi">
+            <a href="https://fmcmasin.github.io/post/markdown-yu-fa">
               <h3 class="post-title">
-                分库分表中间件对比
+                Markdown语法
               </h3>
             </a>
           </div>  

@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>分库分表中间件对比 | masin沉思录</title>
+<title>spring data JPA 多数据源 | masin沉思录</title>
 <link rel="shortcut icon" href="https://fmcmasin.github.io/favicon.ico">
 <link rel="stylesheet" href="https://fmcmasin.github.io/styles/main.css">
 
@@ -58,21 +58,68 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              分库分表中间件对比
+              spring data JPA 多数据源
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2019-02-18 ·
+                · 2019-02-27 ·
               </time>
               
             </div>
             <div class="post-content">
-              <p>数据库支持<br><img src="https://fmcmasin.github.io/post-images/1551165101138.jpeg" alt=""><br>性能对比<br><img src="https://fmcmasin.github.io/post-images/1551165219802.jpeg" alt=""><br>素材来源：<a href="https://github.com/sharding-sphere/sharding-sphere">https://github.com/sharding-sphere/sharding-sphere</a></p>
+              <p><strong>同源数据库的多源支持</strong><br><em>日常项目中因为使用的分布式开发模式，不同的服务有不同的数据源，常常需要在一个项目中使用多个数据源，因此需要配置sping data jpa对多数据源的使用，一般分一下为三步：</em></p>
+<ul>
+<li>1.配置多数据源</li>
+<li>2.不同源的实体类放入不同包路径</li>
+<li>3.声明不同的包路径下使用不同的数据源、事务支持</li>
+</ul>
+<p><strong>异构数据库多源支持</strong><br><em>比如我们的项目中，即需要对mysql的支持，也需要对mongodb的查询等。<br>实体类声明@Entity 关系型数据库支持类型、声明@Document 为mongodb支持类型，不同的数据源使用不同的实体就可以了</em></p>
+<pre><code>interface PersonRepository extends Repository&lt;Person, Long&gt; {
+ …
+}
 
+@Entity
+public class Person {
+  …
+}
+
+interface UserRepository extends Repository&lt;User, Long&gt; {
+ …
+}
+
+@Document
+public class User {
+  …
+}</code></pre><p>但是，如果User用户既使用mysql也使用mongodb呢，也可以做混合使用</p>
+<pre><code>interface JpaPersonRepository extends Repository&lt;Person, Long&gt; {
+ …
+}
+
+interface MongoDBPersonRepository extends Repository&lt;Person, Long&gt; {
+ …
+}
+
+@Entity
+@Document
+public class Person {
+  …
+}</code></pre><p>也可以通过对不同的包路径进行声明，比如A包路径下使用mysql,B包路径下使用mongoDB</p>
+<pre><code>@EnableJpaRepositories(basePackages = &quot;com.neo.repositories.jpa&quot;)
+@EnableMongoRepositories(basePackages = &quot;com.neo.repositories.mongo&quot;)
+interface Configuration { }</code></pre>
             </div>
           </article>
         </div>
     
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://fmcmasin.github.io/post/spring-pei-zhi-log-ji-bie">
+              <h3 class="post-title">
+                spring配置log级别
+              </h3>
+            </a>
+          </div>  
         
 
         

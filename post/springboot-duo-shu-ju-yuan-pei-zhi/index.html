@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>工作流activity初识 | masin沉思录</title>
+<title>springboot多数据源配置 | masin沉思录</title>
 <link rel="shortcut icon" href="https://fmcmasin.github.io/favicon.ico">
 <link rel="stylesheet" href="https://fmcmasin.github.io/styles/main.css">
 
@@ -58,17 +58,73 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              工作流activity初识
+              springboot多数据源配置
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2019-02-25 ·
+                · 2019-02-27 ·
               </time>
               
             </div>
             <div class="post-content">
-              <p>链接：<a href="https://www.jianshu.com/p/bdc9c9fa719d">https://www.jianshu.com/p/bdc9c9fa719d</a></p>
+              <p><strong>springboot1.x版本</strong><br>配置文件</p>
+<pre><code>spring:
+  datasource:
+    url: jdbc:sqlserver://192.168.122.111;DatabaseName=flight
+    username: sa
+    password: 1234.abcd
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  seconddatasource:
+    url: jdbc:sqlserver://192.168.122.111;DatabaseName=flight2
+    username: sa
+    password: 1234.abcd
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre><p>java配置类</p>
+<pre><code>    @Primary
+    @Bean
+    @ConfigurationProperties(prefix = &quot;spring.seconddatasource&quot;)
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
 
+    @Bean(name = &quot;secodDataSource&quot;)
+    @ConfigurationProperties(prefix = &quot;spring.seconddatasource&quot;)
+    public DataSource secodDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Primary
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean(name = &quot;secondJdbcTemplate&quot;)
+    public JdbcTemplate secondJdbcTemplate(@Qualifier(value = &quot;secodDataSource&quot;) DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }</code></pre><p><strong>springboot2.x版本</strong><br>升级之后的版本使用了托管DataSourceProperties的方式来对数据配置从新赋值，或者将配置文件的数据库url替换成jdbc-url</p>
+<pre><code>    @Bean
+    @Primary
+    @ConfigurationProperties(prefix = &quot;spring.datasource&quot;)
+    public DataSourceProperties dataSourceProperties(){
+        return new DataSourceProperties();
+    }
+
+    @Bean(&quot;secondProperties&quot;)
+    @ConfigurationProperties(prefix = &quot;spring.seconddatasource&quot;)
+    public DataSourceProperties secondProperties(){
+        return new DataSourceProperties();
+    }
+
+    @Primary
+    @Bean
+    public DataSource dataSource(DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties.initializeDataSourceBuilder().build();
+    }
+
+    @Bean(name = &quot;secodDataSource&quot;)
+    public DataSource secodDataSource(@Qualifier(value = &quot;secondProperties&quot;) DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties.initializeDataSourceBuilder().build();
+    }</code></pre>
             </div>
           </article>
         </div>
@@ -76,9 +132,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://fmcmasin.github.io/post/fen-ku-fen-biao-zhong-jian-jian-dui-bi">
+            <a href="https://fmcmasin.github.io/post/spring-data-jpa-duo-shu-ju-yuan">
               <h3 class="post-title">
-                分库分表中间件对比
+                spring data JPA 多数据源
               </h3>
             </a>
           </div>  

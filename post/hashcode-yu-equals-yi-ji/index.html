@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>springboot多数据源配置 | masin沉思录</title>
+<title>hashcode与equals以及‘=’ | masin沉思录</title>
 <link rel="shortcut icon" href="https://fmcmasin.github.io/favicon.ico">
 <link rel="stylesheet" href="https://fmcmasin.github.io/styles/main.css">
 
@@ -58,73 +58,55 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              springboot多数据源配置
+              hashcode与equals以及‘=’
             </h2>
             <div class="post-info">
               <time class="post-time">
-                · 2019-02-26 ·
+                · 2019-03-07 ·
               </time>
               
             </div>
             <div class="post-content">
-              <p><strong>springboot1.x版本</strong><br>配置文件</p>
-<pre><code>spring:
-  datasource:
-    url: jdbc:sqlserver://192.168.122.111;DatabaseName=flight
-    username: sa
-    password: 1234.abcd
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-  seconddatasource:
-    url: jdbc:sqlserver://192.168.122.111;DatabaseName=flight2
-    username: sa
-    password: 1234.abcd
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver</code></pre><p>java配置类</p>
-<pre><code>    @Primary
-    @Bean
-    @ConfigurationProperties(prefix = &quot;spring.seconddatasource&quot;)
-    public DataSource dataSource() {
-        return DataSourceBuilder.create().build();
-    }
-
-    @Bean(name = &quot;secodDataSource&quot;)
-    @ConfigurationProperties(prefix = &quot;spring.seconddatasource&quot;)
-    public DataSource secodDataSource() {
-        return DataSourceBuilder.create().build();
-    }
-
-    @Primary
-    @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-    }
-
-    @Bean(name = &quot;secondJdbcTemplate&quot;)
-    public JdbcTemplate secondJdbcTemplate(@Qualifier(value = &quot;secodDataSource&quot;) DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-    }</code></pre><p><strong>springboot2.x版本</strong><br>升级之后的版本使用了托管DataSourceProperties的方式来对数据配置从新赋值，或者将配置文件的数据库url替换成jdbc-url</p>
-<pre><code>    @Bean
-    @Primary
-    @ConfigurationProperties(prefix = &quot;spring.datasource&quot;)
-    public DataSourceProperties dataSourceProperties(){
-        return new DataSourceProperties();
-    }
-
-    @Bean(&quot;secondProperties&quot;)
-    @ConfigurationProperties(prefix = &quot;spring.seconddatasource&quot;)
-    public DataSourceProperties secondProperties(){
-        return new DataSourceProperties();
-    }
-
-    @Primary
-    @Bean
-    public DataSource dataSource(DataSourceProperties dataSourceProperties) {
-        return dataSourceProperties.initializeDataSourceBuilder().build();
-    }
-
-    @Bean(name = &quot;secodDataSource&quot;)
-    public DataSource secodDataSource(@Qualifier(value = &quot;secondProperties&quot;) DataSourceProperties dataSourceProperties) {
-        return dataSourceProperties.initializeDataSourceBuilder().build();
-    }</code></pre>
+              <ol>
+<li>hashcode的计算方式<pre><code>把对象内每个有意义的Field计算出一个int类型的hashCode值：</code></pre></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>计算方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Boolean</td>
+<td>hashCode=(f?0:1)</td>
+</tr>
+<tr>
+<td>整数类型(byte  short   int  char)</td>
+<td>hashCode=(int)f</td>
+</tr>
+<tr>
+<td>long</td>
+<td>hashCode=(int)(f^(f&gt;&gt;&gt;32))</td>
+</tr>
+<tr>
+<td>float</td>
+<td>hashCode=Float.floatToIntBits(f)</td>
+</tr>
+<tr>
+<td>double</td>
+<td>long l = Double.doubleToLongBits(f); hashCode=(int)(l^(l&gt;&gt;&gt;32))</td>
+</tr>
+<tr>
+<td>普通引用类型</td>
+<td>hashCode=f.hashCode()</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>equals 比较的是对象的内容</li>
+<li>‘=’比较的是对象的内存地址</li>
+</ol>
+<pre><code>注意：equals相等的，hashcode一定相等，反之，hashcode相等，equals不一定相等</code></pre>
             </div>
           </article>
         </div>
@@ -132,9 +114,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://fmcmasin.github.io/post/spring-data-jpa-duo-shu-ju-yuan">
+            <a href="https://fmcmasin.github.io/post/springboot-duo-shu-ju-yuan-pei-zhi">
               <h3 class="post-title">
-                spring data JPA 多数据源
+                springboot多数据源配置
               </h3>
             </a>
           </div>  

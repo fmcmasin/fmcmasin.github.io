@@ -67,24 +67,39 @@
               
             </div>
             <div class="post-content">
-              <pre><code>短连接</code></pre><p><a href="https://mmbiz.qpic.cn/mmbiz_png/1J6IbIcPCLYlibnZrDPefOsicU6ujSfSEJMOWC1HxWrhAF6zN7icYXcLVJMq2Mf6Jx88G7KP2IibbiajoIavmKzNUUg/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1">https://mmbiz.qpic.cn/mmbiz_png/1J6IbIcPCLYlibnZrDPefOsicU6ujSfSEJMOWC1HxWrhAF6zN7icYXcLVJMq2Mf6Jx88G7KP2IibbiajoIavmKzNUUg/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1</a></p>
-<pre><code>长连接</code></pre><p><a href="https://mmbiz.qpic.cn/mmbiz_png/1J6IbIcPCLYlibnZrDPefOsicU6ujSfSEJEFCicjwGKfCicqjFrSxSk9Gh01DUgqqlecQUhy15hBMqAibvP8qiaKTJPg/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1">https://mmbiz.qpic.cn/mmbiz_png/1J6IbIcPCLYlibnZrDPefOsicU6ujSfSEJEFCicjwGKfCicqjFrSxSk9Gh01DUgqqlecQUhy15hBMqAibvP8qiaKTJPg/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1</a></p>
-<pre><code>每个连接都需要一个线程来维护，试想一下，如果是百万连接呢？，服务器需要提供百万线程来维护连接吗？，一台4核8G服务器最多一两百线程,cpu就已经超高负载了，一般维护在几十个线程是合理的，那么我们怎么设计能够让服务器能够承担这么大的压力呢？</code></pre><pre><code>Kafka的架构实践：Reactor多路复用</code></pre><pre><code>针对这个问题，大名鼎鼎的Kafka采用的架构策略是Reactor多路复用模型。
-简单来说，就是搞一个acceptor线程，基于底层操作系统的支持，实现连接请求监听。
-如果有某个设备发送了建立连接的请求过来，那么那个线程就把这个建立好的连接交给processor线程。
-每个processor线程会被分配N多个连接，一个线程就可以负责维持N多个连接，他同样会基于底层操作系统的支持监听N多连接的请求。
-如果某个连接发送了请求过来，那么这个processor线程就会把请求放到一个请求队列里去。
-接着后台有一个线程池，这个线程池里有工作线程，会从请求队列里获取请求，处理请求，接着将请求对应的响应放到每个processor线程对应的一个响应队列里去。
-最后，processor线程会把自己的响应队列里的响应发送回给客户端。
-说了这么多，还是来一张图，大家看下面的图，就可以理解上述整个过程了。</code></pre><p><a href="https://mmbiz.qpic.cn/mmbiz_png/1J6IbIcPCLYlibnZrDPefOsicU6ujSfSEJJ8vb0e4C57md3hg38xvD6CPibQEVDZgfmop54Zp0sU2M8iaibIfKOkoTw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1">https://mmbiz.qpic.cn/mmbiz_png/1J6IbIcPCLYlibnZrDPefOsicU6ujSfSEJJ8vb0e4C57md3hg38xvD6CPibQEVDZgfmop54Zp0sU2M8iaibIfKOkoTw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1</a></p>
-<pre><code>优化后的架构是如何支撑大量连接的？</code></pre><pre><code>那么上面优化后的那套架构，是如何支撑大量连接的呢？
-其实很简单。这里最关键的一个因素，就是processor线程是一个人维持N个线程，基于底层操作系统的特殊机制的支持，一个人可以监听N个连接的请求。
-这是极为关键的一个步骤，就仅此一个步骤就可以让一个线程支持多个连接了，不需要一个连接一个线程来支持。
-而且那个processor线程仅仅是接收请求和发送响应，所有的请求都会入队列排队，交给后台线程池来处理。
-比如说按照100万连接来计算，如果有100台机器来处理，按照老的模式，每台机器需要维持1万个线程来处理1万个连接。
-但是如果按照这种多路复用的模式，可能就比如10个processor + 40个线程的线程池，一共50个线程就可以上万连接。
-在这种模式下，每台机器有限的线程数量可以抗住大量的连接。
-因此实际上我们在设计这种支撑大量连接的系统的时候，完全可以参考这种架构，设计成多路复用的模式，用几十个线程处理成千上万个连接，最终实现百万连接的处理架构。</code></pre><p>原文章：<a href="https://mp.weixin.qq.com/s/12MVd1i-ZRyohI4rh9P4uw">https://mp.weixin.qq.com/s/12MVd1i-ZRyohI4rh9P4uw</a></p>
+              <pre><code>    短连接</code></pre><pre><code>    长连接</code></pre><p>但是现在问题又来了，长连接的模式确实是不错的，但是如果说每个设备都要跟系统长期维持一个连接，</p>
+<p>那么对于系统来说就需要搞一个线程，这个线程需要去维护一个设备的长连接，</p>
+<p>然后通过这个连接跟一个设备不停的通信，接收人家发送过来的请求，返回响应给人家。</p>
+<p>大家看下面的图，每个设备都要跟系统维持一个连接，那么对于每个设备的连接，</p>
+<p>系统都会有一个独立的线程来维护这个连接。</p>
+<p>因为你必须要有一个线程不停的尝试从网络连接中读取请求，接着要处理请求，最后还要返回响应给设备。</p>
+<p>每个连接都需要一个线程来维护，试想一下，如果是百万连接呢？，</p>
+<p>服务器需要提供百万线程来维护连接吗？，一台4核8G服务器最多一两百线程,cpu就已经超高负载了，</p>
+<p>一般维护在几十个线程是合理的，那么我们怎么设计能够让服务器能够承担这么大的压力呢？</p>
+<pre><code>    Kafka的架构实践：Reactor多路复用</code></pre><p>针对这个问题，大名鼎鼎的Kafka采用的架构策略是Reactor多路复用模型。</p>
+<p>简单来说，就是搞一个acceptor线程，基于底层操作系统的支持，实现连接请求监听。</p>
+<p>如果有某个设备发送了建立连接的请求过来，那么那个线程就把这个建立好的连接交给processor线程。</p>
+<p>每个processor线程会被分配N多个连接，一个线程就可以负责维持N多个连接，</p>
+<p>他同样会基于底层操作系统的支持监听N多连接的请求。</p>
+<p>如果某个连接发送了请求过来，那么这个processor线程就会把请求放到一个请求队列里去。</p>
+<p>接着后台有一个线程池，这个线程池里有工作线程，会从请求队列里获取请求，</p>
+<p>处理请求，接着将请求对应的响应放到每个processor线程对应的一个响应队列里去。</p>
+<p>最后，processor线程会把自己的响应队列里的响应发送回给客户端。</p>
+<p>说了这么多，还是来一张图，大家看下面的图，就可以理解上述整个过程了。</p>
+<pre><code>    优化后的架构是如何支撑大量连接的？</code></pre><p>那么上面优化后的那套架构，是如何支撑大量连接的呢？</p>
+<p>其实很简单。这里最关键的一个因素，就是processor线程是一个人维持N个线程，</p>
+<p>基于底层操作系统的特殊机制的支持，一个人可以监听N个连接的请求。</p>
+<p>这是极为关键的一个步骤，就仅此一个步骤就可以让一个线程支持多个连接了，</p>
+<p>不需要一个连接一个线程来支持。</p>
+<p>而且那个processor线程仅仅是接收请求和发送响应，所有的请求都会入队列排队，交给后台线程池来处理。</p>
+<p>比如说按照100万连接来计算，如果有100台机器来处理，按照老的模式，</p>
+<p>每台机器需要维持1万个线程来处理1万个连接。</p>
+<p>但是如果按照这种多路复用的模式，可能就比如10个processor + 40个线程的线程池，</p>
+<p>一共50个线程就可以上万连接。</p>
+<p>在这种模式下，每台机器有限的线程数量可以抗住大量的连接。</p>
+<p>因此实际上我们在设计这种支撑大量连接的系统的时候，完全可以参考这种架构，</p>
+<p>设计成多路复用的模式，用几十个线程处理成千上万个连接，最终实现百万连接的处理架构。</p>
+<p>原文章：<a href="https://mp.weixin.qq.com/s/12MVd1i-ZRyohI4rh9P4uw">https://mp.weixin.qq.com/s/12MVd1i-ZRyohI4rh9P4uw</a></p>
 
             </div>
           </article>

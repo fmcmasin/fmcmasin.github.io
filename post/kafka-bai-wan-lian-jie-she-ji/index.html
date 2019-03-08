@@ -1,77 +1,104 @@
+
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-<meta name="description" content="" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+<meta charset="utf-8" >
+
 <title>kafka百万连接设计 | masin沉思录</title>
+<meta name="description" content="不积跬步无以至千里">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
 <link rel="shortcut icon" href="https://fmcmasin.github.io/favicon.ico">
 <link rel="stylesheet" href="https://fmcmasin.github.io/styles/main.css">
 
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
 
 
   </head>
   <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="https://fmcmasin.github.io">
-  <img class="avatar" src="https://fmcmasin.github.io/images/avatar.png" alt="" width="80px" height="80px">
-  </a>
-  <h1 class="site-title">
-    masin沉思录
-  </h1>
-  <p class="site-description">
-    不积跬步无以至千里
-  </p>
-  <div class="menu-container">
-    
-      
-        <a href="/" class="menu">
-          首页
-        </a>
-      
-    
-      
-        <a href="/archives" class="menu">
-          归档
-        </a>
-      
-    
-      
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://fmcmasin.github.io">
+        <img class="avatar" src="https://fmcmasin.github.io/images/avatar.png" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://fmcmasin.github.io">
+        <h1 class="site-title">masin沉思录</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
   </div>
 </div>
 
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
       
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="menu purple-link">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
         <div class="post-detail">
-          <article class="post">
-            <h2 class="post-title">
-              kafka百万连接设计
-            </h2>
-            <div class="post-info">
-              <time class="post-time">
-                · 2019-03-01 ·
-              </time>
-              
-                <a href="https://fmcmasin.github.io/tag/-mnHPMpBJ" class="post-tags">
-                  # 异步消息
-                </a>
-              
-            </div>
-            <div class="post-content">
-              <pre><code>    短连接</code></pre><p><img src="https://fmcmasin.github.io/post-images/1552011878926.jpg" alt=""></p>
+          <h2 class="post-title">kafka百万连接设计</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2019-03-01</span>
+            
+              <span>
+                <i class="icon-pricetags-outline"></i>
+                
+                  <a href="https://fmcmasin.github.io/tag/-mnHPMpBJ">
+                    异步消息
+                    
+                  </a>
+                
+              </span>
+            
+          </div>
+          <div class="post-content">
+            <pre><code>    短连接</code></pre><p><img src="https://fmcmasin.github.io/post-images/1552011878926.jpg" alt=""></p>
 <pre><code>    长连接</code></pre><p><img src="https://fmcmasin.github.io/post-images/1552011886560.jpg" alt=""><br>但是现在问题又来了，长连接的模式确实是不错的，但是如果说每个设备都要跟系统长期维持一个连接，</p>
 <p>那么对于系统来说就需要搞一个线程，这个线程需要去维护一个设备的长连接，</p>
 <p>然后通过这个连接跟一个设备不停的通信，接收人家发送过来的请求，返回响应给人家。</p>
@@ -106,58 +133,73 @@
 <p>设计成多路复用的模式，用几十个线程处理成千上万个连接，最终实现百万连接的处理架构。</p>
 <p>原文章：<a href="https://mp.weixin.qq.com/s/12MVd1i-ZRyohI4rh9P4uw">https://mp.weixin.qq.com/s/12MVd1i-ZRyohI4rh9P4uw</a></p>
 
-            </div>
-          </article>
+          </div>
         </div>
-    
+
         
           <div class="next-post">
-            <div class="next">下一篇</div>
-            <a href="https://fmcmasin.github.io/post/hashcode-yu-equals-yi-ji">
+            <a class="purple-link" href="https://fmcmasin.github.io/post/hashcode-yu-equals-yi-ji">
               <h3 class="post-title">
-                hashcode与equals以及‘=’
+                下一篇：hashcode与equals以及‘=’
               </h3>
             </a>
-          </div>  
+          </div>
+          
+      </div>
+
+      
+        
+          <div id="gitalk-container"></div>
         
 
         
-          
-            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+      
 
-<div id="gitalk-container"></div>
-
-<script>
-
-  var gitalk = new Gitalk({
-    clientID: 'b03bc1bf8f9b3ea13627',
-    clientSecret: '61e43bbb36c037482af487982c3aebac5088b6ba',
-    repo: 'fmcmasin.github.io',
-    owner: 'fmcmasin',
-    admin: ['fmcmasin'],
-    id: location.pathname,      // Ensure uniqueness and length less than 50
-    distractionFreeMode: false  // Facebook-like distraction free mode
-  })
-
-  gitalk.render('gitalk-container')
-
-</script>
-
-          
-
-          
-        
-    
-        <div class="site-footer">
+      <div class="site-footer">
+  <div class="slogan">不积跬步无以至千里</div>
   Powered by Hve Notes
 </div>
 
-<script>
-  hljs.initHighlightingOnLoad()
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
 </script>
 
-      </div>
-    </div>
+
+  
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: 'b03bc1bf8f9b3ea13627',
+        clientSecret: '61e43bbb36c037482af487982c3aebac5088b6ba',
+        repo: 'fmcmasin.github.io',
+        owner: 'fmcmasin',
+        admin: ['fmcmasin'],
+        id: location.pathname,      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
   </body>
 </html>

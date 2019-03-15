@@ -5,7 +5,7 @@
     
 <meta charset="utf-8" >
 
-<title>spring data JPA 多数据源 | masin沉思录</title>
+<title>你选择25k的996还是18k的965？ | masin沉思录</title>
 <meta name="description" content="不积跬步无以至千里">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -82,15 +82,15 @@
 
       <div class="content-container">
         <div class="post-detail">
-          <h2 class="post-title">spring data JPA 多数据源</h2>
+          <h2 class="post-title">你选择25k的996还是18k的965？</h2>
           <div class="post-info post-detail-info">
-            <span><i class="icon-calendar-outline"></i> 2019-02-08</span>
+            <span><i class="icon-calendar-outline"></i> 2019-03-06</span>
             
               <span>
                 <i class="icon-pricetags-outline"></i>
                 
-                  <a href="https://fmcmasin.github.io/tag/SuyGShXaO">
-                    微服务
+                  <a href="https://fmcmasin.github.io/tag/4s2CgqUMr">
+                    自我修炼
                     
                   </a>
                 
@@ -98,54 +98,32 @@
             
           </div>
           <div class="post-content">
-            <p><strong>同源数据库的多源支持</strong><br><em>日常项目中因为使用的分布式开发模式，不同的服务有不同的数据源，常常需要在一个项目中使用多个数据源，因此需要配置sping data jpa对多数据源的使用，一般分一下为三步：</em></p>
-<ul>
-<li>1.配置多数据源</li>
-<li>2.不同源的实体类放入不同包路径</li>
-<li>3.声明不同的包路径下使用不同的数据源、事务支持</li>
-</ul>
-<p><strong>异构数据库多源支持</strong><br><em>比如我们的项目中，即需要对mysql的支持，也需要对mongodb的查询等。<br>实体类声明@Entity 关系型数据库支持类型、声明@Document 为mongodb支持类型，不同的数据源使用不同的实体就可以了</em></p>
-<pre><code>interface PersonRepository extends Repository&lt;Person, Long&gt; {
- …
-}
+            <p>很多互联网公司，更多的创业公司，老板都喜欢玩996。一些情况是工作真的做不完，更多的情况是老板为了心里的满足，更多的是给投资人看看而已。相信大家也都明白，强制996必然导致的是效率低下，身心疲惫。</p>
+<p>还有很多互联网公司早八晚五，早九晚六，早十晚七，甚至一部分创业公司Google范儿，不打卡，弹性工作制，倡导效率至上，快乐工作：</p>
+<p>那么，作为程序员，你是选择哪种工作方式呢？如果是相等的报酬，那么肯定是要选择更快乐的工作方式。</p>
+<p>那么，如果996的公司给你25k，八小时工作日的公司给你18k，你会怎么选择？或者说，你现在的工资是18k，早九晚六，那么你会跳槽到一个月薪25k，强制996的公司吗？</p>
+<p>这里分享一个观点和数字，也是之前对于offer选择的一个建议：</p>
+<p>你想拥有什么，就去追求什么！</p>
+<p>996公司带来了什么？带来了丰富的薪水，月薪25k，扣完五险一金到手17090.54，但是每个月有5100的公积金。</p>
+<p>弹性工作制带来了什么？月薪18k，扣完五险一金到手12383.00，但是每个月有4320的公积金，一年下来跟25k相比少赚了多少钱呢：（17090+5100）＊12 － （12383+4320）＊12 ＝ 65844，也就是说不到十万块钱。</p>
+<p>996公司带走了什么？带走了时间，每天12小时，一周126=72小时，一个月472 ＝ 288小时，一年28812=3456小时*</p>
+<p>弹性工作制带走了什么？带走了时间，每天9小时，一周96=54小时，一个月454 ＝ 216小时，一年21612=2592小时*</p>
+<p>时间相差多少呢？3456 - 2592 ＝ 864小时＝36天，多么可怕，每年要多加班了36个工作日。那么用864个小时多赚了65844人民币，平均呢？65844/864=76，看清楚了吗？是76块钱。</p>
+<p>千万不要跟我说养老金还差一部分呢，因为长期996的人能熬的到拿养老金吗？</p>
+<p>自身成长更关键。</p>
+<p>对于刚刚毕业两三年的同学来说，真的不要急于赚钱，更重要的是自身的成长。试想，如果晚上7点下班，8点到家，8点到10学习两个小时，在娱乐一个月一个小时到十一点，准备睡觉。所以，还有梦想的年轻人，不要着急大把的时间仍在加班上。</p>
+<p>但是对于一些人，为人夫为人父，就算早早加班回家也不能够安心的学习了，承担着足够的家庭压力。那么这样的程序员，也许应该选择996点互联网公司，多赚一些钱，这个还是有必要的。尤其是现在买房至上的社会，不知道有多少程序员为了还贷选择了高薪高强度的工作。</p>
+<p>最后也不多说什么了，只是希望各位朋友们，求职要慎重，充分尊重自己兴趣的情况下才去考虑薪资问题。至于最终的选择还要考虑很多因素。</p>
+<p>来源：<a href="http://h5ip.cn/hSDk">http://h5ip.cn/hSDk</a></p>
 
-@Entity
-public class Person {
-  …
-}
-
-interface UserRepository extends Repository&lt;User, Long&gt; {
- …
-}
-
-@Document
-public class User {
-  …
-}</code></pre><p>但是，如果User用户既使用mysql也使用mongodb呢，也可以做混合使用</p>
-<pre><code>interface JpaPersonRepository extends Repository&lt;Person, Long&gt; {
- …
-}
-
-interface MongoDBPersonRepository extends Repository&lt;Person, Long&gt; {
- …
-}
-
-@Entity
-@Document
-public class Person {
-  …
-}</code></pre><p>也可以通过对不同的包路径进行声明，比如A包路径下使用mysql,B包路径下使用mongoDB</p>
-<pre><code>@EnableJpaRepositories(basePackages = &quot;com.neo.repositories.jpa&quot;)
-@EnableMongoRepositories(basePackages = &quot;com.neo.repositories.mongo&quot;)
-interface Configuration { }</code></pre>
           </div>
         </div>
 
         
           <div class="next-post">
-            <a class="purple-link" href="https://fmcmasin.github.io/post/fen-ku-fen-biao-zhong-jian-jian-dui-bi">
+            <a class="purple-link" href="https://fmcmasin.github.io/post/kafka-bai-wan-lian-jie-she-ji">
               <h3 class="post-title">
-                下一篇：分库分表中间件对比
+                下一篇：kafka百万连接设计
               </h3>
             </a>
           </div>
